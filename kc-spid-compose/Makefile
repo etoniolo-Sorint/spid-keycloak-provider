@@ -4,7 +4,7 @@ SPID_KC_VERSION := $(shell sed -n 's:.*<keycloak.version>\(.*\)</keycloak.versio
 NOW := $(shell date +"%Y%m%d_%H%M%S")
 CONFIGURATION_CLIENT_IMAGE := ghcr.io/polifr/keycloak-spid-provider-configuration-client
 CONFIGURATION_CLIENT_VERSION := latest
-SPID_SP_TEST_IMAGE := italia/spid-sp-test
+SPID_SP_TEST_IMAGE := ghcr.io/italia/spid-sp-test
 SPID_SP_TEST_VERSION := 0.9.0-KC
 
 .ONESHELL:
@@ -144,7 +144,7 @@ test-responses:
 		-v "${PWD}/certificates/spid-sp-test-idp:/spid/ipd-certs" \
 		-v "${PWD}/tests/report/$(NOW)_responses:/spid/html_report:rw" \
 		-v "${PWD}/tests/dumps/$(NOW)_responses:/spid/dumps:rw" \
-		italia/spid-sp-test:$(SPID_SP_TEST_VERSION) \
+		$(SPID_SP_TEST_IMAGE):$(SPID_SP_TEST_VERSION) \
 		--metadata-url "https://localhost:8443/auth/realms/spid/spid-sp-metadata" \
 		--authn-url "https://localhost:8443/auth/realms/spid/protocol/openid-connect/auth?client_id=account&scope=openid&response_type=code&redirect_uri=https://localhost:8443/auth/realms/spid/account&state=12345&kc_idp_hint=spid-spid-sp-test" \
 		--extra --report_format html --report-output-file html_report/ \
