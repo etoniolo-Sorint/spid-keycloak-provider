@@ -5,7 +5,7 @@ NOW := $(shell date +"%Y%m%d_%H%M%S")
 CONFIGURATION_CLIENT_IMAGE := ghcr.io/polifr/keycloak-spid-provider-configuration-client
 CONFIGURATION_CLIENT_VERSION := latest
 SPID_SP_TEST_IMAGE := ghcr.io/italia/spid-sp-test
-SPID_SP_TEST_VERSION := 0.9.0-KC
+SPID_SP_TEST_VERSION := v1.2.17
 
 .ONESHELL:
 
