@@ -2,8 +2,13 @@ name: Build and run E2E tests
 
 on:
   push:
+    tags:
+      - '*-SNAPSHOT'  # Esegue il workflow solo per tag che finiscono con -SNAPSHOT
   pull_request:
     branches: [ development ]
+
+permissions:
+  contents: write    # Permesso fondamentale per creare/aggiornare le releases
 
 jobs:
   build:
@@ -42,6 +47,19 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: target/spid-provider.jar
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Crea GitHub Snapshot Release
+      uses: softprops/action-gh-release@v3
+      with:
+        tag_name: ${{ github.ref_name }}
+        name: "Snapshot ${{ github.ref_name }}"
+        prerelease: true          # Mark come Prerelease / Snapshot
+        draft: false              # Impostare su true se si desidera revisionarla prima di pubblicare
+        files: target/spid-provider.jar
+
+        generate_release_notes: true # Genera automaticamente i cambiamenti da commit/PR
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
